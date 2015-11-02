@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bky.dao.UserDao" >
+  <resultMap id="BaseResultMap" type="com.bky.model.User" >
+    <id column="id" property="id" />
+    <result column="name" property="name"  />
+    <result column="age" property="age"  />
+    <result column="password" property="password"  />
+    <result column="email" property="email"  />
+  </resultMap>
+ 
+
+  <insert id="insert" parameterType="com.bky.model.User" >
+    insert into t_user ( name, age,password,email
+      )
+    values ( #{name}, #{age},#{password},#{email}
+      )
+  </insert>
+  <!--  
+  <insert id="insertSelective" parameterType="com.bky.model.Add" >
+    insert into tadd
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tname != null" >
+        tname,
+      </if>
+      <if test="tpwd != null" >
+        tpwd,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tname != null" >
+        #{tname,jdbcType=VARCHAR},
+      </if>
+      <if test="tpwd != null" >
+        #{tpwd,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.bky.model.User" >
+    update t_user
+    <set >
+     
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+   SELECT * FROM t_user where id =#{id}
+  </select>
+  <delete id="deleteByPrimaryKey">
+     delete from t_user where id =#{id} 
+      
+  </delete>
+  
+  <select id="getAll" resultMap="BaseResultMap">
+  	SELECT * FROM t_user
+  </select>
+  
+</mapper>

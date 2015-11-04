@@ -2,6 +2,8 @@ package com.bky.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.bky.model.User;
 
 public interface UserDao {
@@ -18,4 +20,8 @@ public interface UserDao {
     int updateByPrimaryKey(User record);
     
     List<User> getAll();
+
+	int getPageCount();
+
+	List<User> getUserByPage(@Param("start")int start, @Param("pageSize")int pageSize);
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bky.dao.UserDao;
+import com.bky.model.PageBean;
 import com.bky.model.User;
 import com.bky.service.UserService;
 
@@ -49,6 +50,15 @@ public class UserServiceImpl implements UserService {
 			return "更新成功";
 		}
 		return "更新失败";
+	}
+	@Override
+	public PageBean getAllByPage(int pageNum) {
+		int pageSize =2;
+		int recordCount = addMapper.getPageCount();
+		int start = (pageNum-1)*pageSize;
+		List<User> recordList = addMapper.getUserByPage(start,pageSize);
+		PageBean pager = new PageBean(pageNum, pageSize, recordList, recordCount);
+		return pager;
 	}
 	
 

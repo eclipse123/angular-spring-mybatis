@@ -3,49 +3,27 @@
 /* Controllers */
 
 
-//function MyCtrl1() {}
-//MyCtrl1.$inject = [];
-//
-//
-//function register($scope,$http) { 
-//	$scope.name="hello world";
-//	$scope.register = function(){
-//		   
-//	        var user = {name:$scope.name,age:$scope.age,password:$scope.password,email:$scope.email};
-//	        console.log(path)
-//	        $http(
-//	        	{   method:'POST',
-//	        		url:'http://localhost:8080/aps/addInfo.do',
-//	        		params:user
-//	        	}		
-//	        ).success(function(response) {  
-//	            $scope.ansInfo=response.a;
-//	            });  
-//	   }  
-//}
-//MyCtrl2.$inject = [];
-
 //  var allapp = angular.module('myApp',[]);
 
 
-  app.controller('register',function ($scope,$http) {
-	   $scope.add=function(){
-		   
-		   
-	        var user = {name:$scope.name,age:$scope.age,password:$scope.password,email:$scope.email};
-	        $post(
-	        	{   method:'POST',
-	        		url:'user/addInfo.do',
-	        		params:user
-	        		
-	        	}		
-	        ).success(function(response) {  
-//	            $scope.ansInfo=response.a;
-	            });  
-	   };  
-		   
-
-    });
+//  app.controller('register',function ($scope,$http) {
+//	   $scope.add=function(){
+//		   
+//		   
+//	        var user = {name:$scope.name,age:$scope.age,password:$scope.password,email:$scope.email};
+//	        $post(
+//	        	{   method:'POST',
+//	        		url:'user/addInfo.do',
+//	        		params:user
+//	        		
+//	        	}		
+//	        ).success(function(response) {  
+////	            $scope.ansInfo=response.a;
+//	            });  
+//	   };  
+//		   
+//
+//    });
   app.controller('userList',function ($scope,$http) {
 //	  var items={};
 	  $scope.init = function(){
@@ -62,6 +40,24 @@
 	         
 	      });
 		  };
+		  $scope.getPageUser = function(num){
+			  if(isNaN(num)){
+				  num=1;
+			  }
+			  $http.get('user/getPageUser.do?pageSize='+num).success(function(data){
+				 
+				  $scope.items=data.recordList;
+				  $scope.currentPage=data.currentPage;
+				  $scope.recordCount=data.recordCount;
+				  $scope.pageCount=data.pageCount;
+				  $scope.beginPageIndex=data.beginPageIndex;
+				  $scope.endPageIndex=data.endPageIndex;
+				  console.log(data);
+				  var colum=new Array(10);
+//				  $index=data.beginPageIndex;
+				  $scope.colums = colum;
+			  });
+		  };
 	  $scope.add=function(){
 	        var user = {name:$scope.name,age:$scope.age,password:$scope.password,email:$scope.email};
 //	        $http(
@@ -77,7 +73,7 @@
 	        $.post('user/addInfo.do',user,
 	        		function(data){
 	        	$scope.reply=data;
-	            $scope.getAll();
+	            $scope.getPageUser();
 	        }); 
 	   };  
 	
@@ -92,7 +88,7 @@
 		       
 		  
 	  };
-	  $scope.updates = function(){
+	  $scope.updates = function(currentPage){
 	        var user = {id:$scope.uid,name:$scope.name,age:$scope.age,password:$scope.password,email:$scope.email};
 //	        $http(
 //	        	{   method:'POST',
@@ -107,18 +103,18 @@
 	        		function(data){
 	        	console.log(data);
 	        	$scope.reply=data;
-	            $scope.getAll();
+	            $scope.getPageUser(currentPage);
 	        }); 
 	        
 	   };  
-	  $scope.del = function(data){
+	  $scope.del = function(data,currentPage){
 		  $http(
 		        	{   method:'POST',
 		        		url:'user/delInfo.do',
 		        		params:data
 		        	}		
 		        ).success(function(data) {  
-		        	$scope.getAll();
+		        	$scope.getPageUser(currentPage);
 //		        	$scope.reply=data;
 		            }); 
 		  

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bky.model.PageBean;
 import com.bky.model.User;
 import com.bky.service.UserService;
 
@@ -57,6 +58,24 @@ public class UserController {
 //			request.setAttribute("list", list);
 		
 			return mapper.writeValueAsString(list);
+		
+	}
+	/**
+	 * 分页查询对象列表
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/getPageUser", method = RequestMethod.GET)
+	@ResponseBody
+	public String getAllByPage(String pageSize,HttpServletRequest request) throws Exception, JsonMappingException, IOException{
+		if(pageSize==null) pageSize="1";
+		int pageNum = Integer.parseInt(pageSize.trim());
+		PageBean pager = baseService.getAllByPage(pageNum);
+		
+		return mapper.writeValueAsString(pager);
 		
 	}
 	

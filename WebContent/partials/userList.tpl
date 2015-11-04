@@ -5,7 +5,7 @@
 		<a href="#/userList">Home</a> 
 		<i class="icon-angle-right"></i>
 	</li>
-	<li><a href="#/register">注册</a></li>
+	<li><a href="#/">注册</a></li>
 	<li class="pull-right no-text-shadow">
 		<div id="dashboard-report-range" class="dashboard-date-range tooltips no-tooltip-on-touch-device responsive" data-tablet="" data-desktop="tooltips" data-placement="top" data-original-title="Change dashboard date range">
 			<i class="icon-calendar"></i>
@@ -14,7 +14,7 @@
 		</div>
 	</li>
 </ul>
-<div ng-controller="userList" ng-init="getAll()">
+<div ng-controller="userList" ng-init="getPageUser()">
 <div ng-show="reply!=null"id="myAlert" class="alert alert-success">
    <a href="#" class="close" data-dismiss="alert">&times;</a>
    <strong>{{reply}}</strong>。
@@ -40,7 +40,7 @@
          <td>
          <div class="btn-group">
 		  <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal" ng-click="edit(item)">编辑</button>
-		  <button type="button" class="btn btn-danger" ng-click="del(item)">删除</button>
+		  <button type="button" class="btn btn-danger" ng-click="del(item,currentPage)">删除</button>
 		</div>
 		</td>
       </tr>
@@ -48,19 +48,27 @@
    </tbody>
 </table>
 
-<div class="pagination ">
+<div class="pagination">
 <nav style="text-align: center">
   <ul>
-    <li><a href="#">前一页</a></li>
-    <li class="active">
-      <a href="#">1</a>
+  <li><a href="javascript:void(0)" ng-click="getPageUser(1)"><<第一页</a></li>
+    <li ng-hide="currentPage==1">
+    <a href="javascript:void(0)" ng-click="getPageUser(currentPage-1)"><前一页</a>
     </li>
-    <li><a href="#">2</a></li>
-    <li><a href="#">3</a></li>
-    <li><a href="#">4</a></li>
-    <li><a href="#">后一页</a></li>
+    <li ng-show="currentPage==1">
+    <a><前一页</a>
+    </li>
+   
+    <li ng-repeat="colum in colums"><a href="javascript:void(0)" ng-click="getPageUser(beginPageIndex+$index)">{{beginPageIndex+$index}}</a></li>
+    
+    <li><a href="javascript:void(0)" ng-hide="currentPage==endPageIndex"  ng-click="getPageUser(currentPage+1)">后一页></a></li>
+    <li ng-show="currentPage==endPageIndex">
+    <a>后一页></a>
+    </li>
+    <li><a href="javascript:void(0)" ng-click="getPageUser(endPageIndex)">尾页>></a></li>
   </ul>
   </nav>
+   
 </div>
 
 
@@ -101,15 +109,7 @@
          placeholder="请输入邮箱" required>
    </div>
  
-   <div class="form-group">
-      <div>
-         <div class="checkbox">
-            <label>
-               <input type="checkbox" required> 同意用户协议
-            </label>
-         </div>
-      </div>
-   </div>
+   
    
 </form>
          </div>
@@ -120,7 +120,7 @@
             <button type="button" ng-show="!update" ng-disabled="userForm.$invalid" class="btn btn-primary" ng-click="add()" data-dismiss="modal">
                提交添加
             </button>
-            <button type="button" ng-show="update" ng-disabled="userForm.$invalid" class="btn btn-primary" ng-click="updates()" data-dismiss="modal">
+            <button type="button" ng-show="update" ng-disabled="userForm.$invalid" class="btn btn-primary" ng-click="updates(currentPage)" data-dismiss="modal">
                提交更改
             </button>
          </div>

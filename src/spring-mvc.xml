@@ -12,7 +12,9 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" p:prefix="#/" p:suffix=".jsp" />
 
-	
+	<!-- 支持上传文件 -->  
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>  
+    
     <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter" >  
   <property name="messageConverters">   
          <list>   

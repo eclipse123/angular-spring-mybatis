@@ -1,5 +1,6 @@
 <%@ page language="java"  import="java.util.*"  pageEncoding="UTF-8"%>
 
+
 <!doctype html>
 <html ng-app="myApp">
 
@@ -260,7 +261,7 @@
 
 								<a href="inbox.html?a=view">
 
-								<span class="photo"><img src="./media/image/avatar3.jpg" alt="" /></span>
+								<span class="photo"><img src="media/image/avatar3.jpg" alt="" /></span>
 
 								<span class="subject">
 
@@ -286,7 +287,7 @@
 
 								<a href="inbox.html?a=view">
 
-								<span class="photo"><img src="./media/image/avatar1.jpg" alt="" /></span>
+								<span class="photo"><img src="media/image/avatar1.jpg" alt="" /></span>
 
 								<span class="subject">
 

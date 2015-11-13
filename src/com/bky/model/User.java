@@ -1,13 +1,16 @@
 package com.bky.model;
 
-public class User {
-    private Integer id;
+public class User{
+    
+
+	private Integer id;
 
     private String name;
 
     private String age;
     private String password;
     private String email;
+    private String icon;
 
 	public Integer getId() {
 		return id;
@@ -48,6 +51,16 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	
 	
     
     

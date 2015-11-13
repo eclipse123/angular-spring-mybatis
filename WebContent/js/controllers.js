@@ -2,30 +2,11 @@
 
 /* Controllers */
 
+ 
 
-//  var allapp = angular.module('myApp',[]);
-
-
-//  app.controller('register',function ($scope,$http) {
-//	   $scope.add=function(){
-//		   
-//		   
-//	        var user = {name:$scope.name,age:$scope.age,password:$scope.password,email:$scope.email};
-//	        $post(
-//	        	{   method:'POST',
-//	        		url:'user/addInfo.do',
-//	        		params:user
-//	        		
-//	        	}		
-//	        ).success(function(response) {  
-////	            $scope.ansInfo=response.a;
-//	            });  
-//	   };  
-//		   
-//
-//    });
-  app.controller('userList',function ($scope,$http) {
-//	  var items={};
+  app.controller('userList',function ($scope,$http,$location) {
+	 
+	  
 	  $scope.init = function(){
 		  $scope.name="";
 		  $scope.age="";
@@ -33,33 +14,60 @@
 		  $scope.email="";
 		  $scope.update=false;
 	  };
-	  $scope.getAll = function(){
-		  $http.get('user/getAllUser.do').success(function(data){
-			  
-	          $scope.items=data;
-	         
-	      });
-		  };
+	 
+//	  $scope.getAll = function(){
+//		  $http.get('user/getAllUser.do').success(function(data){
+//			  
+//	          $scope.items=data;
+//	         
+//	      });
+//		  };
 		  $scope.getPageUser = function(num){
+			  $scope.path=$location.protocol()+'://'+$location.host()+':'+$location.port()+'/aps/upload/';
 			  if(isNaN(num)){
 				  num=1;
 			  }
-			  $http.get('user/getPageUser.do?pageSize='+num).success(function(data){
-				 
+			  var username = $scope.search;
+			  if(username==undefined){
+				  username=null;
+			  }
+			  var url = 'user/getPageUser.do',
+	            data = {
+					  'pageSize': num,
+					  'userName': username
+	            },
+	            transFn = function(data) {
+	                return $.param(data);
+	            },
+	            postCfg = {
+	                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+	                transformRequest: transFn
+	            };
+
+			  
+			  $http.post(url, data, postCfg).success(function(data){
 				  $scope.items=data.recordList;
 				  $scope.currentPage=data.currentPage;
 				  $scope.recordCount=data.recordCount;
 				  $scope.pageCount=data.pageCount;
-				  $scope.beginPageIndex=data.beginPageIndex;
+				  $scope.beginPageIndex=data.beginPageIndex; 
 				  $scope.endPageIndex=data.endPageIndex;
-				  console.log(data);
-				  var colum=new Array(10);
+				  $scope.sequence=(data.currentPage-1)*data.pageSize+1
+				  var size=1;
+				  if(data.endPageIndex -data.beginPageIndex>=10 ){
+					  size=10;
+				  }else{
+					  size=data.endPageIndex -data.beginPageIndex+1;
+					  
+				  }
+				  
+				  var colum=new Array(size);
 //				  $index=data.beginPageIndex;
 				  $scope.colums = colum;
 			  });
 		  };
 	  $scope.add=function(){
-	        var user = {name:$scope.name,age:$scope.age,password:$scope.password,email:$scope.email};
+	        var user = {name:$scope.name,age:$scope.age,password:$scope.password,email:$scope.email,icon:$scope.icon};
 //	        $http(
 //	        	{   method:'POST',
 //	        		url:'user/addInfo.do',
@@ -83,6 +91,7 @@
 		        	$scope.password=data.password;
 		        	$scope.email=data.email;
 		        	$scope.uid = data.id;
+		        	$scope.icon = data.icon;
 		        	$scope.update=true;
 //		            $scope.getAll();
 		       
@@ -101,7 +110,7 @@
 //	            }); 
 	        $.post('user/updateUser.do',user,
 	        		function(data){
-	        	console.log(data);
+	        	alert(data);
 	        	$scope.reply=data;
 	            $scope.getPageUser(currentPage);
 	        }); 
@@ -120,6 +129,39 @@
 		  
 		  
 	  };
+	  //图片上传
+//	  $scope.upload=function(){
+//		  console.log($scope.imageSrc);
+//	  var postData = {
+////              vacationType: $scope.leave.type,
+////              reason: $scope.leave.reason,
+////              familyRelation: +$scope.leave.type == 7 ? $scope.leave.relation : "",
+////              startTime: startTime,
+////              endTime: endTime,
+//              fileName: $scope.imageSrc
+////              workDelivers: workDelivers,
+////              ccmailNickNames: sendPersons,
+////              realDays: +$scope.leave.type == 8 ? $scope.leave.timeLong : ""
+//          };
+//
+//          var promise = postMultipart('user/updateIcon.do', postData); 
+//
+//          function postMultipart(url, data) {
+//              var fd = new FormData();
+//              angular.forEach(data, function(val, key) {
+//                  fd.append(key, val);
+//              });
+//              var args = {
+//                  method: 'POST',
+//                  url: url,
+//                  data: fd,
+//                  headers: {'Content-Type': undefined},
+//                  transformRequest: angular.identity
+//              };
+//              return $http(args);
+//          }
+//	  }
 	  
+	
 	  
   });

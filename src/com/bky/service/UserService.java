@@ -17,6 +17,8 @@ public interface UserService {
 	
 	String update(User addInfo);
 
-	PageBean getAllByPage(int pageNum);
+	PageBean getAllByPage(int pageNum,String userName);
+
+	String updateIcon(User user);
 
 }

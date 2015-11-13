@@ -6,7 +6,7 @@ public class PageBean {
 
 	// 传递的参数或是配置的值
 	private int currentPage; // 当前页
-	private int pageSize=10; // 每页显示的数量
+	private int pageSize=5; // 每页显示的数量
 
 	// 查询数据库
 	private List recordList; // 本页的数据列表
@@ -57,6 +57,14 @@ public class PageBean {
 			}
 		}
 	}
+	
+	
+
+	public PageBean() {
+		super();
+	}
+
+
 
 	public List getRecordList() {
 		return recordList;

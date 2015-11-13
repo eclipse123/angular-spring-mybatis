@@ -7,6 +7,7 @@
     <result column="age" property="age"  />
     <result column="password" property="password"  />
     <result column="email" property="email"  />
+    <result column="icon" property="icon"  />
   </resultMap>
  
 
@@ -61,6 +62,15 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <update id="updateIcon" parameterType="com.bky.model.User" >
+    update t_user
+    <set >
+     
+        icon = #{icon,jdbcType=VARCHAR},
+    
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
    SELECT * FROM t_user where id =#{id}
   </select>
@@ -71,12 +81,19 @@
   
   <select id="getAll" resultMap="BaseResultMap">
   	SELECT * FROM t_user
+  	
   </select>
-  <select id="getPageCount" resultType="java.lang.Integer">
+  <select id="getPageCount" resultType="java.lang.Integer" parameterType="String">
   	SELECT count(*) FROM t_user
+  	 <if test="_parameter != null and _parameter != ''">
+        where name like #{userName,jdbcType=VARCHAR}
+      </if>
   </select>
-  <select id="getUserByPage" resultMap="BaseResultMap">
+  <select id="getUserByPage" resultMap="BaseResultMap" parameterType="String">
   	SELECT * FROM t_user 
+  		 <if test="userName != null and userName != ''" >
+        where name like #{userName,jdbcType=VARCHAR}
+      </if>
   	 <if test="start != null and pageSize != null" >
         limit #{start},#{pageSize}
       </if>

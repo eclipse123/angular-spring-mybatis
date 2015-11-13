@@ -3,6 +3,7 @@ package com.bky.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import com.bky.model.User;
 
@@ -21,7 +22,9 @@ public interface UserDao {
     
     List<User> getAll();
 
-	int getPageCount();
+	int getPageCount(String userName);
 
-	List<User> getUserByPage(@Param("start")int start, @Param("pageSize")int pageSize);
+	List<User> getUserByPage(@Param("start")int start, @Param("pageSize")int pageSize,@Param("userName")String userName);
+
+	int updateIcon(User user);
 }

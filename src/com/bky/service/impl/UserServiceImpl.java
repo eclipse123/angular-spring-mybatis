@@ -11,16 +11,16 @@ import com.bky.service.UserService;
 
 @Service("baseService")
 public class UserServiceImpl implements UserService {
-	
+	@Autowired
 	private UserDao addMapper;
 
-	public UserDao getAddMapper() {
-		return addMapper;
-	}
-	@Autowired
-	public void setAddMapper(UserDao addMapper) {
-		this.addMapper = addMapper;
-	}
+//	public UserDao getAddMapper() {
+//		return addMapper;
+//	}
+//	@Autowired
+//	public void setAddMapper(UserDao addMapper) {
+//		this.addMapper = addMapper;
+//	}
 
 	@Override
 	public String addInfo(User addInfo) {
@@ -52,13 +52,20 @@ public class UserServiceImpl implements UserService {
 		return "更新失败";
 	}
 	@Override
-	public PageBean getAllByPage(int pageNum) {
-		int pageSize =2;
-		int recordCount = addMapper.getPageCount();
+	public PageBean getAllByPage(int pageNum,String userName) {
+		int pageSize =4;
+		int recordCount = addMapper.getPageCount(userName);
 		int start = (pageNum-1)*pageSize;
-		List<User> recordList = addMapper.getUserByPage(start,pageSize);
+		List<User> recordList = addMapper.getUserByPage(start,pageSize,userName);
 		PageBean pager = new PageBean(pageNum, pageSize, recordList, recordCount);
 		return pager;
+	}
+	@Override
+	public String updateIcon(User user) {
+		if (addMapper.updateIcon(user) == 1) {
+			return "success";
+		}
+		return "faild";
 	}
 	
 
